@@ -13,6 +13,10 @@ import {
   GetBlockHeaderByHeight, BansList
 } from './daemon-client.models';
 
+/**
+ * Monero Daemon RPC Client
+ * Inspired on https://github.com/cryptoshrimpi/monerod-js/blob/master/lib/ts/monerod-js.ts
+ */
 @Injectable()
 export class DaemonClientService {
 
@@ -20,25 +24,6 @@ export class DaemonClientService {
     @Inject('MONEROD_HOSTNAME')
     private readonly hostname: string,
     private readonly http: HttpClient) {
-  }
-
-  private defaultRequest<TResult>(requestBody: RequestBody): Promise<TResult> {
-    return this.request<TResult>(requestBody, '/json_rpc');
-  }
-
-  private request<TResult>(requestBody: any, path: String): Promise<TResult> {
-    return this.http.post<{ result: TResult }>(this.hostname + path, requestBody)
-      .pipe(map(r => r.result))
-      .toPromise();
-  }
-
-  private buildDefaultRequestBody(method: string, params: any): RequestBody {
-    return {
-      jsonrpc: '2.0',
-      id: '0',
-      method: method,
-      params: params
-    };
   }
 
   public getBlockCount() {
@@ -165,6 +150,25 @@ export class DaemonClientService {
   public getFeeEstimate() {
     const body = this.buildDefaultRequestBody('get_fee_estimate', null);
     return this.defaultRequest<GetFeeEstimate>(body);
+  }
+
+  private defaultRequest<TResult>(requestBody: RequestBody): Promise<TResult> {
+    return this.request<TResult>(requestBody, '/json_rpc');
+  }
+
+  private request<TResult>(requestBody: any, path: String): Promise<TResult> {
+    return this.http.post<{ result: TResult }>(this.hostname + path, requestBody)
+      .pipe(map(r => r.result))
+      .toPromise();
+  }
+
+  private buildDefaultRequestBody(method: string, params: any): RequestBody {
+    return {
+      jsonrpc: '2.0',
+      id: '0',
+      method: method,
+      params: params
+    };
   }
 
 }

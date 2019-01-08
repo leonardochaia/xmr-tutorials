@@ -1,3 +1,5 @@
+// Definitions credits to https://github.com/cryptoshrimpi/monerod-js/blob/master/lib/ts/monerod-js.ts
+
 export interface GetVersion {
     status: string;
     version: number;
