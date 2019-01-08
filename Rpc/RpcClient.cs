@@ -34,6 +34,7 @@ namespace xmr_tutorials.Rpc
             content.Headers.ContentType.CharSet = string.Empty;
 
             var result = await client.PostAsync(url, content);
+            result.EnsureSuccessStatusCode();
             // Read it as string
             // Sometimes the daemon responds with text/plain but with JSON
             var stringResult = await result.Content.ReadAsStringAsync();
