@@ -1,0 +1,82 @@
+@import '~@angular/material/theming';
+@import 'app-theme';
+@import 'application.variables';
+@import 'app-components';
+@import 'material-helper';
+/**
+    Material Core Classes
+**/
+
+@include mat-core();
+/**
+    Theming Classes
+**/
+
+.app-theme {
+  @include angular-material-theme($app-theme);
+  @include app-components-theme($app-theme);
+  @include expose-material-theme-classes($app-theme);
+
+  .bg-invalid {
+    background-color: rgb(251, 217, 214) !important;
+  }
+}
+
+.app-dark-theme {
+  @include angular-material-theme($app-dark-theme);
+  @include app-components-theme($app-dark-theme);
+  @include expose-material-theme-classes($app-dark-theme);
+
+  .app-text-title {
+    color: whitesmoke;
+  }
+
+  .bg-invalid {
+    background-color: #6d0a02 !important;
+  }
+}
+
+/** General Classes **/
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100% !important;
+  background-color: whitesmoke
+}
+
+a:link,
+a:visited,
+a:focus,
+a:hover {
+  color: inherit;
+}
+
+/** Uilitie Classes **/
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+.material-icons,
+.icon-text {
+  vertical-align: middle;
+}
+
+.mat-tooltip.tooltip {
+  font-size: 12px;
+}
+
+.app-modal {
+  width: 80vw;
+
+  &.full-height {
+    height: 60vh;
+  }
+}

@@ -1,0 +1,5 @@
+// Add custo mcomponent styles here through a mixin
+// @import 'src/app/flex-layout-split/split-handle/split-handle.component-theme';
+@mixin app-components-theme($theme) {
+  // @include split-handle-component-theme($theme);
+}
