@@ -1,4 +1,4 @@
-namespace xmr_tutorials.Configuration
+namespace xmr_tutorials.Daemon
 {
     public class DaemonConfiguration
     {

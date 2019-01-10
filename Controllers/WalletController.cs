@@ -1,30 +1,45 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using xmr_tutorials.Configuration;
 using xmr_tutorials.Rpc;
+using xmr_tutorials.Wallet;
 
 namespace xmr_tutorials.Controllers
 {
     [Route("api/[controller]")]
     public class WalletController : Controller
     {
-        private readonly WalletConfiguration config;
+        private readonly WalletManager wallet;
 
-        private readonly RpcClient client;
-
-        public WalletController(
-            IOptions<WalletConfiguration> options,
-            RpcClient client)
+        public WalletController(WalletManager wallet)
         {
-            this.config = options.Value;
-            this.client = client;
+            this.wallet = wallet;
         }
 
+#if DEBUG
+        /// <summary>
+        /// Quick way to execute an RPC method on the wallet.
+        /// No payloads
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<dynamic> Test(string method = "get_balance")
         {
-            return await client.Call<dynamic>($"{config.Url}/json_rpc", method);
+            return await wallet.CallAsync<dynamic>(new RpcRequestPayload(method));
+        }
+
+        [HttpGet("address")]
+        public async Task<string> Address()
+        {
+            return await wallet.QueryAddressAsync();
+        }
+
+        [HttpGet("balance")]
+        public async Task<double> Balance()
+        {
+            return await wallet.QueryHumanFriendlyBalanceAsync();
         }
     }
+#endif
+
 }

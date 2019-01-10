@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using xmr_tutorials.Configuration;
+using xmr_tutorials.Daemon;
 using xmr_tutorials.Rpc;
 
 namespace xmr_tutorials.Controllers
@@ -24,7 +24,7 @@ namespace xmr_tutorials.Controllers
         [HttpGet]
         public async Task<dynamic> Test(string method = "get_info")
         {
-            return await client.Call<dynamic>($"{config.Url}/json_rpc", method);
+            return await client.CallAsync<dynamic>($"{config.Url}/json_rpc", method);
         }
     }
 }

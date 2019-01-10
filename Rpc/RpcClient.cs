@@ -16,14 +16,14 @@ namespace xmr_tutorials.Rpc
              NullValueHandling = NullValueHandling.Ignore
          };
 
-        public Task<RpcResponse<TResult>> Call<TResult>(
+        public Task<RpcResponse<TResult>> CallAsync<TResult>(
             string url,
             string method)
         {
-            return Call<TResult>(url, new RpcRequestPayload(method));
+            return CallAsync<TResult>(url, new RpcRequestPayload(method));
         }
 
-        public async Task<RpcResponse<TResult>> Call<TResult>(
+        public async Task<RpcResponse<TResult>> CallAsync<TResult>(
             string url,
             RpcRequestPayload payload)
         {

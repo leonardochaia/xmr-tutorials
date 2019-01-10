@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using xmr_tutorials.Configuration;
 using xmr_tutorials.Rpc;
+using xmr_tutorials.Daemon;
+using xmr_tutorials.Wallet;
 
 namespace xmr_tutorials
 {
@@ -22,8 +22,9 @@ namespace xmr_tutorials
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<DaemonConfiguration>(options => Configuration.GetSection("Daemon").Bind(options));
-            services.Configure<WalletConfiguration>(options => Configuration.GetSection("Wallet").Bind(options));
+            services.AddDaemon(Configuration);
+
+            services.AddWallet(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
