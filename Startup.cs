@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using xmr_tutorials.Rpc;
 using xmr_tutorials.Daemon;
 using xmr_tutorials.Wallet;
+using xmr_tutorials.AppStatus;
 
 namespace xmr_tutorials
 {
@@ -22,6 +23,8 @@ namespace xmr_tutorials
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<RpcClient>();
+
             services.AddDaemon(Configuration);
 
             services.AddWallet(Configuration);
@@ -43,7 +46,8 @@ namespace xmr_tutorials
                 });
             });
 
-            services.AddSingleton<RpcClient>();
+            services.AddSignalR();
+            services.AddSingleton<AppStatusHubBroadcaster>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +73,11 @@ namespace xmr_tutorials
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<AppStatusHub>("/hubs/app-status");
+            });
 
             app.UseMvc(routes =>
             {

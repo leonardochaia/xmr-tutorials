@@ -7,6 +7,10 @@ import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatToolbarModule, MatIconModule } from '@angular/material';
+import { AppStatusModule } from './app-status/app-status.module';
+import { NavigationModule } from './navigation/navigation.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +23,14 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     FormsModule,
     RouterModule,
+    FlexLayoutModule,
+
+    MatToolbarModule,
+    MatIconModule,
+
     AppRoutingModule,
+    AppStatusModule,
+    NavigationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -9,7 +9,7 @@ export const hmrBootstrap = (
     module.hot.accept();
     bootstrap().then(mod => ngModule = mod);
     module.hot.dispose(() => {
-        console.clear();
+        // console.clear();
         // HACK: destroy all cdk overlays since they break with HMR.
         const overlays = document.getElementsByClassName('cdk-overlay-container');
         for (let i = 0; i < overlays.length; i++) {
