@@ -6,7 +6,7 @@
 
 </mat-toolbar>
 <ng-container *ngIf="currentStatus">
-  <mat-toolbar color="warn" *ngIf="currentStatus.hasEnoughBalance">
-    The wallet associated with the app does not have funds!
+  <mat-toolbar color="warn" *ngIf="!currentStatus.hasEnoughBalance">
+    The wallet associated with the app does not have spendable funds!
   </mat-toolbar>
 </ng-container>
