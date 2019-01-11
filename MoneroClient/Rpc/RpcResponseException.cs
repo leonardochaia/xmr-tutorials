@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace xmr_tutorials.Rpc
+namespace MoneroClient.Rpc
 {
     public class RpcResponseException : Exception
     {

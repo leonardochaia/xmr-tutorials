@@ -1,16 +1,19 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using MoneroClient.Rpc;
 
-namespace xmr_tutorials.Wallet
+namespace MoneroClient.Wallet
 {
     public static class IServiceCollectionWalletExtensions
     {
         public static IServiceCollection AddWallet(
             this IServiceCollection services,
-            IConfiguration config)
+            WalletConfiguration config)
         {
 
-            services.Configure<WalletConfiguration>(options => config.GetSection("Wallet").Bind(options));
+            services.AddSingleton(config);
+
+            services.TryAddSingleton<RpcClient>();
 
             services.AddSingleton<WalletManager>();
 

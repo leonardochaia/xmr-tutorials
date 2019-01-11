@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using xmr_tutorials.Rpc;
-using xmr_tutorials.Wallet;
+using MoneroClient.Rpc;
+using MoneroClient.Wallet;
 
 namespace xmr_tutorials.Controllers
 {

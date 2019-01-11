@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using xmr_tutorials.Rpc;
-using xmr_tutorials.Daemon;
-using xmr_tutorials.Wallet;
+using MoneroClient.Wallet;
 using xmr_tutorials.AppStatus;
 
 namespace xmr_tutorials
@@ -23,11 +21,9 @@ namespace xmr_tutorials
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<RpcClient>();
-
-            services.AddDaemon(Configuration);
-
-            services.AddWallet(Configuration);
+            var walletConfig = new WalletConfiguration();
+            Configuration.GetSection("Wallet").Bind(walletConfig);
+            services.AddWallet(walletConfig);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

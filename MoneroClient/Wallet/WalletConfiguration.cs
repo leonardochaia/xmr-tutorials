@@ -1,4 +1,4 @@
-namespace xmr_tutorials.Wallet
+namespace MoneroClient.Wallet
 {
     public class WalletConfiguration
     {

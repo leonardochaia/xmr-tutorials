@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using MoneroClient.Wallet;
 using xmr_tutorials.AppStatus.DataTransfer;
 using xmr_tutorials.Utils;
-using xmr_tutorials.Wallet;
 
 namespace xmr_tutorials.AppStatus
 {

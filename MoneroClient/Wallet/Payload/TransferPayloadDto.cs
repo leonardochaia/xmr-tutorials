@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace xmr_tutorials.Wallet.Payload
+namespace MoneroClient.Wallet.Payload
 {
     public class TransferPayloadDto
     {

@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using xmr_tutorials.Rpc;
-using xmr_tutorials.Wallet.DataTransfer;
-using xmr_tutorials.Wallet.Payload;
+using MoneroClient.Rpc;
+using MoneroClient.Wallet.DataTransfer;
+using MoneroClient.Wallet.Payload;
 
-namespace xmr_tutorials.Wallet
+namespace MoneroClient.Wallet
 {
     public class WalletManager
     {
@@ -13,10 +12,10 @@ namespace xmr_tutorials.Wallet
         private readonly RpcClient client;
 
         public WalletManager(
-            IOptions<WalletConfiguration> options,
+            WalletConfiguration config,
             RpcClient client)
         {
-            this.config = options.Value;
+            this.config = config;
             this.client = client;
         }
 
@@ -54,7 +53,7 @@ namespace xmr_tutorials.Wallet
             return response.Result;
         }
 
-        internal async Task<RpcResponse<TResult>> CallAsync<TResult>(RpcRequestPayload payload)
+        public async Task<RpcResponse<TResult>> CallAsync<TResult>(RpcRequestPayload payload)
         {
             return await client.CallAsync<TResult>($"{config.Url}/json_rpc", payload);
         }

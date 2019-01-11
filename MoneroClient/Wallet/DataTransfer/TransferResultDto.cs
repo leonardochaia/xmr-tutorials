@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace xmr_tutorials.Wallet.DataTransfer
+namespace MoneroClient.Wallet.DataTransfer
 {
     public class TransferResultDto
     {

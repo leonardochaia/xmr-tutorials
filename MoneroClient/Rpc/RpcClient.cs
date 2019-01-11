@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace xmr_tutorials.Rpc
+namespace MoneroClient.Rpc
 {
     public class RpcClient : IDisposable
     {
