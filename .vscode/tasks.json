@@ -7,7 +7,17 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/xmr-tutorials.csproj"
+                "${workspaceFolder}/webapp/xmr-tutorials.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/webapp/xmr-tutorials.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
