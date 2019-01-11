@@ -38,8 +38,14 @@ namespace xmr_tutorials.Rpc
             // Read it as string
             // Sometimes the daemon responds with text/plain but with JSON
             var stringResult = await result.Content.ReadAsStringAsync();
-            return JsonConvert
+            var response = JsonConvert
                 .DeserializeObject<RpcResponse<TResult>>(stringResult, jsonSettings);
+
+            if (response.Error != null)
+            {
+                throw new RpcResponseException(response.Error);
+            }
+            return response;
         }
 
         public void Dispose()
