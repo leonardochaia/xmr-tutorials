@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 namespace MoneroClient.Rpc
 {
-    public class RpcClient : IDisposable
+    public class RpcClient
     {
-        private readonly HttpClient client = new HttpClient();
+        private static readonly HttpClient client = new HttpClient();
 
         private readonly JsonSerializerSettings jsonSettings =
          new JsonSerializerSettings()
@@ -46,11 +46,6 @@ namespace MoneroClient.Rpc
                 throw new RpcResponseException(response.Error);
             }
             return response;
-        }
-
-        public void Dispose()
-        {
-            client.Dispose();
         }
     }
 }
