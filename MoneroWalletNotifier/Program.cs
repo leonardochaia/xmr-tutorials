@@ -23,8 +23,8 @@ namespace MoneroWalletNotifier
             var address = await wallet.QueryAddressAsync();
             logger.LogInformation($"Wallet {address}");
 
-            var splitter = services.GetService<WalletOutputsSpliter>();
-            await splitter.TrySplitOutputs();
+            var splitter = services.GetService<WalletOutputsDicer>();
+            await splitter.TryDice();
             logger.LogInformation("Application Finished");
             Console.ReadKey();
         }
@@ -44,7 +44,8 @@ namespace MoneroWalletNotifier
             var walletConfig = new WalletConfiguration();
             configuration.GetSection("Wallet").Bind(walletConfig);
             services.AddWallet(walletConfig);
-            services.AddSingleton<WalletOutputsSpliter>();
+            services.Configure<DicingConfiguration>(configuration.GetSection("Dicing"));
+            services.AddSingleton<WalletOutputsDicer>();
 
             return services.BuildServiceProvider();
         }

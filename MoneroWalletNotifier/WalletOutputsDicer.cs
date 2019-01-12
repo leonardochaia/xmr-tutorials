@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -8,11 +6,10 @@ using MoneroClient.Rpc;
 using MoneroClient.Utils;
 using MoneroClient.Wallet;
 using MoneroClient.Wallet.Payload;
-using Newtonsoft.Json;
 
 namespace MoneroWalletNotifier
 {
-    public class WalletOutputsSpliter
+    public class WalletOutputsDicer
     {
         private readonly WalletManager wallet;
 
@@ -23,23 +20,23 @@ namespace MoneroWalletNotifier
 
         private readonly ILogger logger;
 
-        private WalletBackgroundConfig config;
+        private DicingConfiguration config;
 
-        public WalletOutputsSpliter(
+        public WalletOutputsDicer(
             WalletManager wallet,
             ILoggerFactory loggerFactory,
-            WalletConfiguration walletConfig)
+            IOptions<DicingConfiguration> dicingOptions)
         {
             this.wallet = wallet;
-            this.logger = loggerFactory.CreateLogger<WalletOutputsSpliter>();
-            this.config = walletConfig.BackgroundConfig;
+            this.logger = loggerFactory.CreateLogger<WalletOutputsDicer>();
+            this.config = dicingOptions.Value;
         }
 
-        public async Task TrySplitOutputs()
+        public async Task TryDice()
         {
-            if (!config.AttemptToSplitOutputs)
+            if (!config.Enabled)
             {
-                logger.LogInformation("Outputs splitting disabled by config");
+                logger.LogInformation("Dicing disabled by config");
                 return;
             }
 
@@ -49,7 +46,7 @@ namespace MoneroWalletNotifier
                 .Where(t => t.Amount > splitAmount)
                 .OrderBy(t => t.Amount);
 
-            logger.LogInformation($"{transfersToSplit.Count()} can be split");
+            logger.LogInformation($"{transfersToSplit.Count()} can be diced");
 
             if (transfersToSplit.Any())
             {
@@ -62,7 +59,7 @@ namespace MoneroWalletNotifier
                         transferAmount = outputsPerTransfer;
                     }
 
-                    logger.LogInformation($"Split {MoneroUtils.AtomicToMonero(transfer.Amount)}" +
+                    logger.LogInformation($"Dicing {MoneroUtils.AtomicToMonero(transfer.Amount)}" +
                         $" into {transferAmount} of {MoneroUtils.AtomicToMonero(splitAmount)}");
 
                     var transaction = new TransferPayloadDto();
