@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using xmr_tutorials.Rpc;
@@ -39,19 +40,21 @@ namespace xmr_tutorials.Wallet
             return response.Result.Balance / 1e12;
         }
 
-        public async Task<TransferResultDto> TransferAsync(string recipient, ulong atomicAmount)
+        public async Task<TransferResultDto> TransferAsync(TransferPayloadDto dto)
         {
-            var payload = new RpcRequestPayload<TransferPayloadDto>("transfer", new TransferPayloadDto
-            {
-                Destinations = new[] {
-                    new TransferPayloadDestinationDto(){
-                        Address = recipient,
-                        Amount = atomicAmount
-                    }
-                }
-            });
+            var payload = new RpcRequestPayload<TransferPayloadDto>("transfer", dto);
             var response = await this.CallAsync<TransferResultDto>(payload);
             return response.Result;
+        }
+
+        public async Task<IEnumerable<IncomingTransferDto>> QueryIncomingTransfersAsync(IncomingTransferType transferType)
+        {
+            var payload = new RpcRequestPayload<IncomingTransfersPayload>("incoming_transfers", new IncomingTransfersPayload
+            {
+                TransferType = transferType
+            });
+            var response = await this.CallAsync<IncomingTransferResultDto>(payload);
+            return response.Result.Transfers;
         }
 
         internal async Task<RpcResponse<TResult>> CallAsync<TResult>(RpcRequestPayload payload)

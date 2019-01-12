@@ -5,14 +5,20 @@ namespace xmr_tutorials.Wallet.Payload
 {
     public class TransferPayloadDto
     {
+        public TransferPayloadDto()
+        {
+            Destinations = new List<TransferPayloadDestinationDto>();
+            SubaddrIndices = new List<long>();
+        }
+
         [JsonProperty("destinations")]
-        public IEnumerable<TransferPayloadDestinationDto> Destinations { get; set; }
+        public ICollection<TransferPayloadDestinationDto> Destinations { get; set; }
 
         [JsonProperty("account_index", NullValueHandling = NullValueHandling.Ignore)]
         public long? AccountIndex { get; set; }
 
         [JsonProperty("subaddr_indices", NullValueHandling = NullValueHandling.Ignore)]
-        public IEnumerable<long> SubaddrIndices { get; set; }
+        public ICollection<long> SubaddrIndices { get; set; }
 
         [JsonProperty("priority", NullValueHandling = NullValueHandling.Ignore)]
         public long? Priority { get; set; }

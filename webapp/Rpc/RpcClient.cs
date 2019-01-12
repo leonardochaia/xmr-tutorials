@@ -8,7 +8,7 @@ namespace xmr_tutorials.Rpc
 {
     public class RpcClient : IDisposable
     {
-        private readonly HttpClient client = new HttpClient();
+        private static HttpClient client = new HttpClient();
 
         private readonly JsonSerializerSettings jsonSettings =
          new JsonSerializerSettings()
