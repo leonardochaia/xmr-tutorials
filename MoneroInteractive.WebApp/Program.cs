@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace xmr_tutorials
+namespace MoneroInteractive.WebApp
 {
     public class Program
     {

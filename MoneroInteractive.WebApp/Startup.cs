@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MoneroClient.Wallet;
-using xmr_tutorials.AppStatus;
-using xmr_tutorials.Utils;
+using MoneroInteractive.WebApp.AppStatus;
+using MoneroInteractive.WebApp.Utils;
 
-namespace xmr_tutorials
+namespace MoneroInteractive.WebApp
 {
     public class Startup
     {

@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using MoneroClient.Wallet;
 
-namespace xmr_tutorials.AppStatus
+namespace MoneroInteractive.WebApp.AppStatus
 {
     public class AppStatusHub : Hub
     {

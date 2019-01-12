@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MoneroClient.Rpc;
 using MoneroClient.Wallet;
 
-namespace xmr_tutorials.Controllers
+namespace MoneroInteractive.WebApp.Controllers
 {
     [Route("api/[controller]")]
     public class WalletController : Controller
@@ -39,7 +39,6 @@ namespace xmr_tutorials.Controllers
         {
             return await wallet.QueryHumanFriendlyBalanceAsync();
         }
-    }
 #endif
-
+    }
 }

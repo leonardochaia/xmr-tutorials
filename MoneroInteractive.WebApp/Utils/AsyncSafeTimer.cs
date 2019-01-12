@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace xmr_tutorials.Utils
+namespace MoneroInteractive.WebApp.Utils
 {
     public abstract class AsyncSafeTimer
     {

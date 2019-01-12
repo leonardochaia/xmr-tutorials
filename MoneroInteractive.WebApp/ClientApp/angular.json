@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "xmr_tutorials": {
+    "monero-interactive": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -55,23 +55,23 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "xmr_tutorials:build"
+            "browserTarget": "monero-interactive:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "xmr_tutorials:build:production"
+              "browserTarget": "monero-interactive:build:production"
             },
             "hmr": {
               "hmr": true,
               "hmrWarning": false,
-              "browserTarget": "xmr_tutorials:build:hmr"
+              "browserTarget": "monero-interactive:build:hmr"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "xmr_tutorials:build"
+            "browserTarget": "monero-interactive:build"
           }
         },
         "test": {
@@ -130,7 +130,7 @@
         }
       }
     },
-    "xmr_tutorials-e2e": {
+    "monero-interactive-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -138,7 +138,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "xmr_tutorials:serve"
+            "devServerTarget": "monero-interactive:serve"
           }
         },
         "lint": {
@@ -153,7 +153,7 @@
       }
     }
   },
-  "defaultProject": "xmr_tutorials",
+  "defaultProject": "monero-interactive",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"

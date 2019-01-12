@@ -2,10 +2,10 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using MoneroClient.Wallet;
-using xmr_tutorials.AppStatus.DataTransfer;
-using xmr_tutorials.Utils;
+using MoneroInteractive.WebApp.AppStatus.DataTransfer;
+using MoneroInteractive.WebApp.Utils;
 
-namespace xmr_tutorials.AppStatus
+namespace MoneroInteractive.WebApp.AppStatus
 {
     public class AppStatusHubBroadcaster : AsyncSafeTimer
     {

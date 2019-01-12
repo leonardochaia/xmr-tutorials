@@ -10,7 +10,7 @@
 
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
-    <RootNamespace>xmr_tutorials</RootNamespace>
+    <RootNamespace>MoneroInteractive.WebApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

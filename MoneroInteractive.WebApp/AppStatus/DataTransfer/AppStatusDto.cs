@@ -1,6 +1,6 @@
 using System;
 
-namespace xmr_tutorials.AppStatus.DataTransfer
+namespace MoneroInteractive.WebApp.AppStatus.DataTransfer
 {
     public class AppStatusDto : IEquatable<AppStatusDto>
     {
