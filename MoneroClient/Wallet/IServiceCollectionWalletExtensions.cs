@@ -16,7 +16,6 @@ namespace MoneroClient.Wallet
             services.TryAddSingleton<RpcClient>();
 
             services.AddSingleton<WalletManager>();
-            services.AddSingleton<WalletOutputsSpliter>();
 
             return services;
         }

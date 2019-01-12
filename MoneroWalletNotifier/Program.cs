@@ -23,35 +23,40 @@ namespace MoneroWalletNotifier
             var address = await wallet.QueryAddressAsync();
             logger.LogInformation($"Wallet {address}");
 
+            var splitter = services.GetService<WalletOutputsSpliter>();
+            await splitter.TrySplitOutputs();
+            logger.LogInformation("Application Finished");
+            Console.ReadKey();
         }
 
         static IServiceProvider ConfigureServices()
         {
             var configuration = BindConfiguration();
 
-            var walletConfig = new WalletConfiguration();
-            configuration.GetSection("Wallet").Bind(walletConfig);
+            var services = new ServiceCollection();
 
-            var serviceCollection = new ServiceCollection()
-                .AddLogging(opt =>
+            services.AddLogging(opt =>
                 {
                     opt.AddConsole();
                     opt.SetMinimumLevel(LogLevel.Trace);
-                })
-                .AddWallet(walletConfig);
+                });
 
-            return serviceCollection.BuildServiceProvider();
+            var walletConfig = new WalletConfiguration();
+            configuration.GetSection("Wallet").Bind(walletConfig);
+            services.AddWallet(walletConfig);
+            services.AddSingleton<WalletOutputsSpliter>();
+
+            return services.BuildServiceProvider();
         }
 
         static IConfiguration BindConfiguration()
         {
             var builder = new ConfigurationBuilder()
                         .SetBasePath(Path.Combine(AppContext.BaseDirectory))
-                        .AddJsonFile("appsettings.Development.json", optional: true)
-                        .AddJsonFile("appsettings.json", optional: true);
+                        .AddJsonFile("appsettings.json", optional: false)
+                        .AddJsonFile("appsettings.Development.json", optional: false);
 
             IConfigurationRoot configuration = builder.Build();
-            Console.WriteLine(Path.Combine(AppContext.BaseDirectory));
             return configuration;
         }
     }

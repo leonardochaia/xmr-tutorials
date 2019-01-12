@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MoneroClient.Rpc;
+using MoneroClient.Utils;
+using MoneroClient.Wallet;
+using MoneroClient.Wallet.Payload;
 using Newtonsoft.Json;
-using xmr_tutorials.Rpc;
-using xmr_tutorials.Utils;
-using xmr_tutorials.Wallet;
-using xmr_tutorials.Wallet.Payload;
 
-namespace xmr_tutorials.Wallet
+namespace MoneroWalletNotifier
 {
-    public class WalletOutputsSpliter : AsyncSafeTimer
+    public class WalletOutputsSpliter
     {
         private readonly WalletManager wallet;
 
@@ -22,41 +22,27 @@ namespace xmr_tutorials.Wallet
         private uint outputsPerTransfer => config.MaxOutputsPerTransfer;
 
         private readonly ILogger logger;
-        private WalletBackgroundConfig config;
 
-        protected override TimeSpan UpdateInterval =>
-            TimeSpan.FromMinutes(config.UpdateEveryMinutes);
+        private WalletBackgroundConfig config;
 
         public WalletOutputsSpliter(
             WalletManager wallet,
             ILoggerFactory loggerFactory,
-            IOptions<WalletConfiguration> options)
+            WalletConfiguration walletConfig)
         {
             this.wallet = wallet;
             this.logger = loggerFactory.CreateLogger<WalletOutputsSpliter>();
-            this.config = options.Value.BackgroundConfig;
+            this.config = walletConfig.BackgroundConfig;
         }
 
-        public override void StartTimer()
+        public async Task TrySplitOutputs()
         {
-            if (config.AttemptToSplitOutputs)
+            if (!config.AttemptToSplitOutputs)
             {
-                logger.LogInformation($"Will attempt to split wallet outputs every {config.UpdateEveryMinutes} minutes");
-                base.StartTimer();
+                logger.LogInformation("Outputs splitting disabled by config");
+                return;
             }
-            else
-            {
-                logger.LogInformation($"Wallet outputs will NOT be auto-split in background");
-            }
-        }
 
-        protected override Task Tick()
-        {
-            return TrySplitOutputs();
-        }
-
-        private async Task TrySplitOutputs()
-        {
             var transfers = await this.wallet
                 .QueryIncomingTransfersAsync(IncomingTransferType.Available);
             var transfersToSplit = transfers
@@ -70,16 +56,17 @@ namespace xmr_tutorials.Wallet
                 var address = await wallet.QueryAddressAsync();
                 foreach (var transfer in transfersToSplit)
                 {
-                    var outputAmount = transfer.Amount / splitAmount;
-                    if (outputAmount > outputsPerTransfer)
+                    var transferAmount = transfer.Amount / splitAmount;
+                    if (transferAmount > outputsPerTransfer)
                     {
-                        outputAmount = outputsPerTransfer;
+                        transferAmount = outputsPerTransfer;
                     }
 
                     logger.LogInformation($"Split {MoneroUtils.AtomicToMonero(transfer.Amount)}" +
-                        $" into {outputAmount} of {MoneroUtils.AtomicToMonero(splitAmount)}");
+                        $" into {transferAmount} of {MoneroUtils.AtomicToMonero(splitAmount)}");
+
                     var transaction = new TransferPayloadDto();
-                    for (uint i = 0; i < outputsPerTransfer; i++)
+                    for (uint i = 0; i < transferAmount; i++)
                     {
                         transaction.Destinations.Add(new TransferPayloadDestinationDto
                         {
@@ -88,25 +75,37 @@ namespace xmr_tutorials.Wallet
                         });
                     }
 
-                    logger.LogInformation($"Executing transfer..");
-                    try
-                    {
-                        var transferResult = await wallet.TransferAsync(transaction);
-                        logger.LogInformation($"Transfer {MoneroUtils.AtomicToMonero(transferResult.Amount)}" +
-                            $" with fee {MoneroUtils.AtomicToMonero(transferResult.Fee)} ({ transferResult.TxHash})");
-                    }
-                    catch (RpcResponseException ex)
-                    {
-                        if (ex.ResponseError.Code == -37 || ex.ResponseError.Code == -17)
-                        {
-                            // not enough money. Fee is not considered.
-                            logger.LogWarning($"Transfer of {MoneroUtils.AtomicToMonero(splitAmount)} failed due to {ex.Message}. Stopping.");
-                            return;
-                        }
-                        throw;
-                    }
+                    await PerformTransfer(transaction);
                 }
+            }
+        }
 
+        private async Task PerformTransfer(TransferPayloadDto transaction)
+        {
+            if (config.DryRun)
+            {
+                var amounts = transaction.Destinations.Select(d => MoneroUtils.AtomicToMonero(d.Amount));
+                logger.LogInformation("DRY RUN: Transfer " + string.Join(',', amounts));
+            }
+            else
+            {
+                logger.LogInformation($"Executing transfer..");
+                try
+                {
+                    var transferResult = await wallet.TransferAsync(transaction);
+                    logger.LogInformation($"Transfer {MoneroUtils.AtomicToMonero(transferResult.Amount)}" +
+                        $" with fee {MoneroUtils.AtomicToMonero(transferResult.Fee)} ({ transferResult.TxHash})");
+                }
+                catch (RpcResponseException ex)
+                {
+                    if (ex.ResponseError.Code == -37 || ex.ResponseError.Code == -17)
+                    {
+                        // not enough money. Fee is not considered.
+                        logger.LogWarning($"Transfer of {MoneroUtils.AtomicToMonero(splitAmount)} failed due to {ex.Message}. Stopping.");
+                        return;
+                    }
+                    throw;
+                }
             }
         }
     }

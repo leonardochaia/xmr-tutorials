@@ -11,6 +11,8 @@ namespace MoneroClient.Wallet
     {
         public bool AttemptToSplitOutputs { get; set; } = true;
 
+        public bool DryRun { get; set; } = true;
+
         public uint UpdateEveryMinutes { get; set; } = 10;
 
         /// <summary>
