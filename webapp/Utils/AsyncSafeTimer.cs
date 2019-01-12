@@ -11,8 +11,13 @@ namespace xmr_tutorials.Utils
         private Timer timer;
         private volatile bool updating;
 
-        public AsyncSafeTimer()
+        public virtual void StartTimer()
         {
+            if (timer != null)
+            {
+                throw new InvalidOperationException("This operation is already scheduled");
+            }
+
             timer = new Timer(OnTimer, null, TimeSpan.FromSeconds(0), UpdateInterval);
         }
 

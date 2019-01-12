@@ -13,6 +13,7 @@ namespace xmr_tutorials.Wallet
             services.Configure<WalletConfiguration>(options => config.GetSection("Wallet").Bind(options));
 
             services.AddSingleton<WalletManager>();
+            services.AddSingleton<WalletOutputsSpliter>();
 
             return services;
         }

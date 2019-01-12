@@ -5,10 +5,10 @@ namespace xmr_tutorials.Wallet.DataTransfer
     public class TransferResultDto
     {
         [JsonProperty("amount")]
-        public long Amount { get; set; }
+        public ulong Amount { get; set; }
 
         [JsonProperty("fee")]
-        public long Fee { get; set; }
+        public ulong Fee { get; set; }
 
         [JsonProperty("multisig_txset")]
         public string MultisigTxset { get; set; }

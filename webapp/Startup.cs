@@ -8,6 +8,7 @@ using xmr_tutorials.Rpc;
 using xmr_tutorials.Daemon;
 using xmr_tutorials.Wallet;
 using xmr_tutorials.AppStatus;
+using xmr_tutorials.Utils;
 
 namespace xmr_tutorials
 {
@@ -98,6 +99,16 @@ namespace xmr_tutorials
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            var timers = new AsyncSafeTimer[] {
+                app.ApplicationServices.GetRequiredService<WalletOutputsSpliter>(),
+                app.ApplicationServices.GetRequiredService<AppStatusHubBroadcaster>(),
+            };
+
+            foreach (var timer in timers)
+            {
+                timer.StartTimer();
+            }
         }
     }
 }

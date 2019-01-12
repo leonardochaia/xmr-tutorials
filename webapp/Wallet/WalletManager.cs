@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using xmr_tutorials.Rpc;
+using xmr_tutorials.Utils;
 using xmr_tutorials.Wallet.DataTransfer;
 using xmr_tutorials.Wallet.Payload;
 
@@ -36,8 +37,7 @@ namespace xmr_tutorials.Wallet
         public async Task<double> QueryHumanFriendlyBalanceAsync()
         {
             var response = await this.CallAsync<BalanceDto>(new RpcRequestPayload("get_balance"));
-            // 1e-12 XMR (0.000000000001 XMR, or one piconero)
-            return response.Result.Balance / 1e12;
+            return MoneroUtils.AtomicToMonero(response.Result.Balance);
         }
 
         public async Task<TransferResultDto> TransferAsync(TransferPayloadDto dto)

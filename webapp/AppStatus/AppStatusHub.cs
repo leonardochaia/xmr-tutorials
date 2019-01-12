@@ -15,7 +15,7 @@ namespace xmr_tutorials.AppStatus
         {
             this.wallet = wallet;
             this.broadcaster = broadcaster;
-        }
+        } 
 
         public override Task OnConnectedAsync()
         {
