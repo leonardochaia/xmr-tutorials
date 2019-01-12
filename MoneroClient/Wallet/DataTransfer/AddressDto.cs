@@ -17,7 +17,7 @@ namespace MoneroClient.Wallet.DataTransfer
         public string AddressAddress { get; set; }
 
         [JsonProperty("address_index")]
-        public long AddressIndex { get; set; }
+        public uint AddressIndex { get; set; }
 
         [JsonProperty("label")]
         public string Label { get; set; }

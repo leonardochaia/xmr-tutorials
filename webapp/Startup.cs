@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MoneroClient.Wallet;
 using xmr_tutorials.AppStatus;
+using xmr_tutorials.Utils;
 
 namespace xmr_tutorials
 {
@@ -94,6 +95,15 @@ namespace xmr_tutorials
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            var timers = new AsyncSafeTimer[] {
+                app.ApplicationServices.GetRequiredService<AppStatusHubBroadcaster>(),
+            };
+
+            foreach (var timer in timers)
+            {
+                timer.StartTimer();
+            }
         }
     }
 }

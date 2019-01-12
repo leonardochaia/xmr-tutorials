@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MoneroClient.Rpc;
+using MoneroClient.Utils;
 using MoneroClient.Wallet.DataTransfer;
 using MoneroClient.Wallet.Payload;
 
@@ -34,23 +36,24 @@ namespace MoneroClient.Wallet
         public async Task<double> QueryHumanFriendlyBalanceAsync()
         {
             var response = await this.CallAsync<BalanceDto>(new RpcRequestPayload("get_balance"));
-            // 1e-12 XMR (0.000000000001 XMR, or one piconero)
-            return response.Result.Balance / 1e12;
+            return MoneroUtils.AtomicToMonero(response.Result.Balance);
         }
 
-        public async Task<TransferResultDto> TransferAsync(string recipient, ulong atomicAmount)
+        public async Task<TransferResultDto> TransferAsync(TransferPayloadDto dto)
         {
-            var payload = new RpcRequestPayload<TransferPayloadDto>("transfer", new TransferPayloadDto
-            {
-                Destinations = new[] {
-                    new TransferPayloadDestinationDto(){
-                        Address = recipient,
-                        Amount = atomicAmount
-                    }
-                }
-            });
+            var payload = new RpcRequestPayload<TransferPayloadDto>("transfer", dto);
             var response = await this.CallAsync<TransferResultDto>(payload);
             return response.Result;
+        }
+
+        public async Task<IEnumerable<IncomingTransferDto>> QueryIncomingTransfersAsync(IncomingTransferType transferType)
+        {
+            var payload = new RpcRequestPayload<IncomingTransfersPayload>("incoming_transfers", new IncomingTransfersPayload
+            {
+                TransferType = transferType
+            });
+            var response = await this.CallAsync<IncomingTransferResultDto>(payload);
+            return response.Result.Transfers;
         }
 
         public async Task<RpcResponse<TResult>> CallAsync<TResult>(RpcRequestPayload payload)
