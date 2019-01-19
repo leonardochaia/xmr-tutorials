@@ -1,4 +1,23 @@
 {
     "files.eol": "\n",
-    "editor.rulers": [80]
+    "editor.rulers": [80],
+    "html.format.wrapAttributes": "force-aligned",
+    "beautify.language": {
+        "js": {
+            "type": [
+                "javascript",
+                "json",
+                "jsonc"
+            ],
+            "filename": [
+                ".jshintrc",
+                ".jsbeautifyrc"
+            ]
+        },
+        "css": [
+            "css",
+            "scss"
+        ],
+        "html": []
+    }
 }
