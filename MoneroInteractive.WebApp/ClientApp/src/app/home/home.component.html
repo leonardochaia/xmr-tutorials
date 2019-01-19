@@ -1,3 +1,84 @@
-<app-top-bar></app-top-bar>
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
+<div class="monero-logo"></div>
+
+<h1 class="mat-display-2"
+    style="text-align: center">Interactive Tutorials on Monero Stagenet</h1>
+
+<section fxLayout="column"
+         fxLayout.gt-sm="row"
+         fxLayoutGap="16px">
+
+    <mat-card fxFlex.gt-sm="33"
+              class="mat-elevation-z8">
+        <mat-card-header>
+            <div mat-card-avatar
+                 style="background-image: url('/assets/p2p_network.png'); background-size: cover;"></div>
+            <mat-card-title>Learn Monero</mat-card-title>
+            <mat-card-subtitle>Without spending actual funds!</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                Learn by interacting with the Monero Stagenet Network.
+                Tutorials validates your steps and teaches you how to
+                use Monero.
+            </p>
+            <p>
+                You can do every tutorial without spending any real Monero
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button>START</button>
+        </mat-card-actions>
+    </mat-card>
+
+    <mat-card fxFlex.gt-sm="33"
+              class="mat-elevation-z8">
+        <mat-card-header>
+            <div mat-card-avatar
+                 style="background-image: url('/assets/p2p_network.png'); background-size: cover;"></div>
+            <mat-card-title>Stagenet only</mat-card-title>
+            <mat-card-subtitle>No real monero will be spent</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                All tutorials work only in the Monero Stagenet.
+                The Stagenet is exactly the same as Mainnet, only that
+                coins have no value.
+            </p>
+            <p>
+                The technology is the same, what you learn on the Stagenet
+                works the same on the Mainnet.
+            </p>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card fxFlex.gt-sm="33"
+              class="mat-elevation-z8">
+        <mat-card-header>
+            <div mat-card-avatar
+                 style="background-image: url('/assets/github_logo_32.png'); background-size: cover;"></div>
+            <mat-card-title>Contributing</mat-card-title>
+            <mat-card-subtitle>Is there anything broken? Want to help?</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                The entire code for Monero Interactive is hosted on GitHub.
+                If you find anything broken, incorrect information, or
+                something else, you can create issues on our GitHub.
+            </p>
+            <p>
+                You can also reach us at support@buySomedomain.com
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button>CODE ON GITHUB</button>
+        </mat-card-actions>
+    </mat-card>
+
+</section>
+
+<section>
+    <h2 class="mat-display-1">
+        Beginer tutorials
+    </h2>
+    <app-tutorial-list></app-tutorial-list>
+</section>
