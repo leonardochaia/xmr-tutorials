@@ -26,11 +26,11 @@ namespace MoneroWalletNotifier
 
         public WalletOutputsDicer(
             WalletManager wallet,
-            ILoggerFactory loggerFactory,
+            ILogger<WalletOutputsDicer> logger,
             IOptions<DicingConfiguration> dicingOptions)
         {
             this.wallet = wallet;
-            logger = loggerFactory.CreateLogger<WalletOutputsDicer>();
+            this.logger = logger;
             config = dicingOptions.Value;
         }
 

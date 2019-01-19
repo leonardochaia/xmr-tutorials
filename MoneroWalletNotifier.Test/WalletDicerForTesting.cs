@@ -9,11 +9,10 @@ namespace MoneroWalletNotifier.Test
 {
     public class WalletDicerForTesting : WalletOutputsDicer
     {
-        public WalletDicerForTesting(
-            WalletManager wallet,
-            ILoggerFactory loggerFactory,
+        public WalletDicerForTesting(WalletManager wallet,
+            ILogger<WalletOutputsDicer> logger,
             IOptions<DicingConfiguration> dicingOptions)
-            : base(wallet, loggerFactory, dicingOptions)
+            : base(wallet, logger, dicingOptions)
         {
         }
 
@@ -21,7 +20,7 @@ namespace MoneroWalletNotifier.Test
             IEnumerable<IncomingTransferDto> transfers,
             string targetAddress)
         {
-            return base.PerformDice(transfers, targetAddress);
+            return PerformDice(transfers, targetAddress);
         }
     }
 }

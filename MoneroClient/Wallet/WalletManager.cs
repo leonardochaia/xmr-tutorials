@@ -23,26 +23,26 @@ namespace MoneroClient.Wallet
 
         public async Task<string> QueryAddressAsync()
         {
-            var response = await this.CallAsync<AddressDto>(new RpcRequestPayload("get_address"));
+            var response = await CallAsync<AddressDto>(new RpcRequestPayload("get_address"));
             return response.Result.Address;
         }
 
         public async Task<BalanceDto> QueryBalanceAsync()
         {
-            var response = await this.CallAsync<BalanceDto>(new RpcRequestPayload("get_balance"));
+            var response = await CallAsync<BalanceDto>(new RpcRequestPayload("get_balance"));
             return response.Result;
         }
 
         public async Task<double> QueryHumanFriendlyBalanceAsync()
         {
-            var response = await this.CallAsync<BalanceDto>(new RpcRequestPayload("get_balance"));
+            var response = await CallAsync<BalanceDto>(new RpcRequestPayload("get_balance"));
             return MoneroUtils.AtomicToMonero(response.Result.Balance);
         }
 
         public async Task<TransferResultDto> TransferAsync(TransferPayloadDto dto)
         {
             var payload = new RpcRequestPayload<TransferPayloadDto>("transfer", dto);
-            var response = await this.CallAsync<TransferResultDto>(payload);
+            var response = await CallAsync<TransferResultDto>(payload);
             return response.Result;
         }
 
@@ -52,7 +52,7 @@ namespace MoneroClient.Wallet
             {
                 TransferType = transferType
             });
-            var response = await this.CallAsync<IncomingTransferResultDto>(payload);
+            var response = await CallAsync<IncomingTransferResultDto>(payload);
             return response.Result.Transfers;
         }
 

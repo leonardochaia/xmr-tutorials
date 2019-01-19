@@ -1,4 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,35 +12,28 @@ namespace MoneroWalletNotifier.Test
     [TestClass]
     public class OutputDicerTests
     {
-        WalletDicerForTesting dicer;
-        readonly DicingConfiguration config = new DicingConfiguration
+        private WalletDicerForTesting dicer;
+
+        private readonly DicingConfiguration config = new DicingConfiguration
         {
             SplitAmount = 100,
             MaxOutputsPerTransfer = 10,
             DryRun = true,
             Enabled = true,
         };
-        readonly string testAddress = "test_address";
+
+        private readonly string testAddress = "test_address";
 
         [TestInitialize]
         public void TestInitialize()
         {
-            var serviceProvider = new ServiceCollection()
-                .AddLogging(opt =>
-                {
-                    opt.AddConsole();
-                    opt.SetMinimumLevel(LogLevel.Trace);
-                })
-                .BuildServiceProvider();
-
-            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-
+            var logger = Mock.Of<ILogger<WalletOutputsDicer>>();
             var options = Mock.Of<IOptions<DicingConfiguration>>(op => op.Value == config);
-            dicer = new WalletDicerForTesting(null, loggerFactory, options);
+            dicer = new WalletDicerForTesting(null, logger, options);
         }
 
         [TestMethod]
-        public void DicerShouldDiceOutputsAccordingToConfiguration()
+        public void ShouldDiceAccordingToConfiguration()
         {
             var transfers = new List<IncomingTransferDto>()
             {
@@ -62,6 +54,16 @@ namespace MoneroWalletNotifier.Test
 
             Assert.IsTrue(result.All(t => t.Destinations.All(d => d.Amount == MoneroUtils.MoneroToAtomic(config.SplitAmount))));
             Assert.IsTrue(result.All(t => t.Destinations.All(d => d.Address == testAddress)));
+        }
+
+        [TestMethod]
+        public void ShouldNotDiceIfNoIncomingTransfers()
+        {
+            var transfers = new List<IncomingTransferDto>();
+
+            var result = dicer.PerformDiceTest(transfers, testAddress);
+
+            Assert.IsFalse(result.Any());
         }
     }
 }
