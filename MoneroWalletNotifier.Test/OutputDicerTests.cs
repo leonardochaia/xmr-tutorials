@@ -12,7 +12,7 @@ using System.Linq;
 namespace MoneroWalletNotifier.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class OutputDicerTests
     {
         WalletDicerForTesting dicer;
         readonly DicingConfiguration config = new DicingConfiguration
