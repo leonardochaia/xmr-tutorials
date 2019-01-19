@@ -7,8 +7,6 @@ namespace MoneroWalletNotifier
 
         public bool DryRun { get; set; } = true;
 
-        public uint UpdateEveryMinutes { get; set; } = 10;
-
         /// <summary>
         /// Split incoming transfers of more than SplitAmount
         /// into transfers of SplitAmount

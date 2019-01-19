@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Options;
 using MoneroClient.Rpc;
 using MoneroClient.Utils;
 using MoneroClient.Wallet;
+using MoneroClient.Wallet.DataTransfer;
 using MoneroClient.Wallet.Payload;
 
 namespace MoneroWalletNotifier
@@ -13,10 +15,10 @@ namespace MoneroWalletNotifier
     {
         private readonly WalletManager wallet;
 
-        private ulong splitAmount =>
+        private ulong SplitAmount =>
             MoneroUtils.MoneroToAtomic(config.SplitAmount);
 
-        private uint outputsPerTransfer => config.MaxOutputsPerTransfer;
+        private uint OutputsPerTransfer => config.MaxOutputsPerTransfer;
 
         private readonly ILogger logger;
 
@@ -28,8 +30,8 @@ namespace MoneroWalletNotifier
             IOptions<DicingConfiguration> dicingOptions)
         {
             this.wallet = wallet;
-            this.logger = loggerFactory.CreateLogger<WalletOutputsDicer>();
-            this.config = dicingOptions.Value;
+            logger = loggerFactory.CreateLogger<WalletOutputsDicer>();
+            config = dicingOptions.Value;
         }
 
         public async Task TryDice()
@@ -40,44 +42,64 @@ namespace MoneroWalletNotifier
                 return;
             }
 
-            var transfers = await this.wallet
+            var transfers = await wallet
                 .QueryIncomingTransfersAsync(IncomingTransferType.Available);
-            var transfersToSplit = transfers
-                .Where(t => t.Amount > splitAmount)
-                .OrderBy(t => t.Amount);
+            var address = await wallet.QueryAddressAsync();
 
-            logger.LogInformation($"{transfersToSplit.Count()} can be diced");
-
-            if (transfersToSplit.Any())
+            var newTransfers = PerformDice(transfers, address);
+            foreach (var transfer in newTransfers)
             {
-                var address = await wallet.QueryAddressAsync();
-                foreach (var transfer in transfersToSplit)
-                {
-                    var transferAmount = transfer.Amount / splitAmount;
-                    if (transferAmount > outputsPerTransfer)
-                    {
-                        transferAmount = outputsPerTransfer;
-                    }
-
-                    logger.LogInformation($"Dicing {MoneroUtils.AtomicToMonero(transfer.Amount)}" +
-                        $" into {transferAmount} of {MoneroUtils.AtomicToMonero(splitAmount)}");
-
-                    var transaction = new TransferPayloadDto();
-                    for (uint i = 0; i < transferAmount; i++)
-                    {
-                        transaction.Destinations.Add(new TransferPayloadDestinationDto
-                        {
-                            Address = address,
-                            Amount = splitAmount
-                        });
-                    }
-
-                    await PerformTransfer(transaction);
-                }
+                await PerformTransfer(transfer);
             }
         }
 
-        private async Task PerformTransfer(TransferPayloadDto transaction)
+        protected IEnumerable<TransferPayloadDto> PerformDice(
+            IEnumerable<IncomingTransferDto> transfers,
+            string targetAddress)
+        {
+            var transfersToSplit = transfers
+                .Where(t => t.Amount > SplitAmount)
+                .OrderBy(t => t.Amount);
+
+            logger.LogInformation($"{transfersToSplit.Count()} will be diced.");
+
+            if (transfersToSplit.Any())
+            {
+                var newTransfers = new List<TransferPayloadDto>();
+                TransferPayloadDto currentTransfer = null;
+
+                foreach (var transfer in transfersToSplit)
+                {
+                    var transferAmount = transfer.Amount / SplitAmount;
+
+                    logger.LogInformation($"Dicing {MoneroUtils.AtomicToMonero(transfer.Amount)}" +
+                        $" into {transferAmount} of {MoneroUtils.AtomicToMonero(SplitAmount)}");
+
+                    for (uint i = 0; i < transferAmount; i++)
+                    {
+                        if (currentTransfer == null
+                            || currentTransfer.Destinations.Count == OutputsPerTransfer)
+                        {
+                            currentTransfer = new TransferPayloadDto();
+                            newTransfers.Add(currentTransfer);
+                        }
+
+                        currentTransfer.Destinations.Add(new TransferPayloadDestinationDto
+                        {
+                            Address = targetAddress,
+                            Amount = SplitAmount
+                        });
+                    }
+                }
+                return newTransfers;
+            }
+            else
+            {
+                return Enumerable.Empty<TransferPayloadDto>();
+            }
+        }
+
+        protected async Task PerformTransfer(TransferPayloadDto transaction)
         {
             if (config.DryRun)
             {
@@ -98,7 +120,7 @@ namespace MoneroWalletNotifier
                     if (ex.ResponseError.Code == -37 || ex.ResponseError.Code == -17)
                     {
                         // not enough money. Fee is not considered.
-                        logger.LogWarning($"Transfer of {MoneroUtils.AtomicToMonero(splitAmount)} failed due to {ex.Message}. Stopping.");
+                        logger.LogWarning($"Transfer of {MoneroUtils.AtomicToMonero(SplitAmount)} failed due to {ex.Message}. Stopping.");
                         return;
                     }
                     throw;
