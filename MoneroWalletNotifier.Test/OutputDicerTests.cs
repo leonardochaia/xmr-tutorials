@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoneroClient.Utils;
-using MoneroClient.Wallet;
 using MoneroClient.Wallet.DataTransfer;
 using Moq;
 using System.Collections.Generic;

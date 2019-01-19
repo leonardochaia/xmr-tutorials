@@ -44,6 +44,7 @@ namespace MoneroWalletNotifier
 
             var transfers = await wallet
                 .QueryIncomingTransfersAsync(IncomingTransferType.Available);
+
             var address = await wallet.QueryAddressAsync();
 
             var newTransfers = PerformDice(transfers, address);
@@ -63,40 +64,33 @@ namespace MoneroWalletNotifier
 
             logger.LogInformation($"{transfersToSplit.Count()} will be diced.");
 
-            if (transfersToSplit.Any())
-            {
-                var newTransfers = new List<TransferPayloadDto>();
-                TransferPayloadDto currentTransfer = null;
+            var newTransfers = new List<TransferPayloadDto>();
+            TransferPayloadDto currentTransfer = null;
 
-                foreach (var transfer in transfersToSplit)
+            foreach (var transfer in transfersToSplit)
+            {
+                var transferAmount = transfer.Amount / SplitAmount;
+
+                logger.LogInformation($"Dicing {MoneroUtils.AtomicToMonero(transfer.Amount)}" +
+                    $" into {transferAmount} of {MoneroUtils.AtomicToMonero(SplitAmount)}");
+
+                for (uint i = 0; i < transferAmount; i++)
                 {
-                    var transferAmount = transfer.Amount / SplitAmount;
-
-                    logger.LogInformation($"Dicing {MoneroUtils.AtomicToMonero(transfer.Amount)}" +
-                        $" into {transferAmount} of {MoneroUtils.AtomicToMonero(SplitAmount)}");
-
-                    for (uint i = 0; i < transferAmount; i++)
+                    if (currentTransfer == null
+                        || currentTransfer.Destinations.Count >= OutputsPerTransfer)
                     {
-                        if (currentTransfer == null
-                            || currentTransfer.Destinations.Count == OutputsPerTransfer)
-                        {
-                            currentTransfer = new TransferPayloadDto();
-                            newTransfers.Add(currentTransfer);
-                        }
-
-                        currentTransfer.Destinations.Add(new TransferPayloadDestinationDto
-                        {
-                            Address = targetAddress,
-                            Amount = SplitAmount
-                        });
+                        currentTransfer = new TransferPayloadDto();
+                        newTransfers.Add(currentTransfer);
                     }
+
+                    currentTransfer.Destinations.Add(new TransferPayloadDestinationDto
+                    {
+                        Address = targetAddress,
+                        Amount = SplitAmount
+                    });
                 }
-                return newTransfers;
             }
-            else
-            {
-                return Enumerable.Empty<TransferPayloadDto>();
-            }
+            return newTransfers;
         }
 
         protected async Task PerformTransfer(TransferPayloadDto transaction)
