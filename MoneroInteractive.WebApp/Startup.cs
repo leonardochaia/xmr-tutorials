@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using MoneroClient.Wallet;
 using MoneroInteractive.WebApp.AppStatus;
+using MoneroInteractive.WebApp.Localization;
+using MoneroInteractive.WebApp.SpaExtensions;
 using MoneroInteractive.WebApp.Utils;
 
 namespace MoneroInteractive.WebApp
@@ -22,17 +25,11 @@ namespace MoneroInteractive.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var walletConfig = new WalletConfiguration();
-            Configuration.GetSection("Wallet").Bind(walletConfig);
+            var walletConfig = Configuration.GetSection("Wallet")
+                .Get<WalletConfiguration>();
             services.AddWallet(walletConfig);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
 
             services.AddSwaggerGen(c =>
             {
@@ -45,10 +42,19 @@ namespace MoneroInteractive.WebApp
 
             services.AddSignalR();
             services.AddSingleton<AppStatusHubBroadcaster>();
+
+            services.AddHttpContextAccessor();
+
+            var localizationConfig = Configuration.GetSection("Localization")
+                .Get<LocalizationConfiguration>();
+            services.AddUserLanguageService(localizationConfig);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IHostingEnvironment env,
+            LocalizationConfiguration localizationConfig)
         {
             if (env.IsDevelopment())
             {
@@ -68,12 +74,9 @@ namespace MoneroInteractive.WebApp
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Monero Tutorials V1");
             });
 
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
-
             app.UseSignalR(routes =>
             {
-                routes.MapHub<AppStatusHub>("/hubs/app-status");
+                routes.MapHub<AppStatusHub>("/api/hubs/app-status");
             });
 
             app.UseMvc(routes =>
@@ -83,18 +86,7 @@ namespace MoneroInteractive.WebApp
                     template: "{controller}/{action=Index}/{id?}");
             });
 
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
-            });
+            app.MapSpaForLanguages(env, localizationConfig.AvailableLanguages);
 
             var timers = new AsyncSafeTimer[] {
                 app.ApplicationServices.GetRequiredService<AppStatusHubBroadcaster>(),

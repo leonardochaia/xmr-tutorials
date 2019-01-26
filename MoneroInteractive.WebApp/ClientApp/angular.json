@@ -15,10 +15,11 @@
           "options": {
             "progress": true,
             "extractCss": false,
-            "outputPath": "dist",
+            "aot": true,
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
+            "outputPath": "dist/tmp",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/assets"
@@ -29,7 +30,7 @@
             "scripts": []
           },
           "configurations": {
-            "production": {
+            "en-prod": {
               "fileReplacements": [{
                 "replace": "src/environments/environment.ts",
                 "with": "src/environments/environment.prod.ts"
@@ -42,29 +43,73 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "outputPath": "dist/en",
+              "i18nFile": "src/i18n/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en",
+              "baseHref": "/en/"
             },
-            "hmr": {
+            "en-dev": {
+              "outputPath": "dist/en",
+              "i18nFile": "src/i18n/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en",
+              "baseHref": "/en/"
+            },
+            "es-prod": {
               "fileReplacements": [{
                 "replace": "src/environments/environment.ts",
-                "with": "src/environments/environment.hmr.ts"
-              }]
+                "with": "src/environments/environment.prod.ts"
+              }],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "outputPath": "dist/es",
+              "i18nFile": "src/i18n/messages.es.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "es",
+              "baseHref": "/es/"
+            },
+            "es-dev": {
+              "outputPath": "dist/es",
+              "i18nFile": "src/i18n/messages.es.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "es",
+              "baseHref": "/es/"
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "monero-interactive:build"
+            "browserTarget": "monero-interactive:build",
+            "servePath": "/"
           },
           "configurations": {
-            "production": {
-              "browserTarget": "monero-interactive:build:production"
+            "en-prod": {
+              "browserTarget": "monero-interactive:build:en-prod"
             },
-            "hmr": {
+            "en-dev": {
+              "publicHost": "https://localhost:5001/en/sockjs-node/",
               "hmr": true,
               "hmrWarning": false,
-              "browserTarget": "monero-interactive:build:hmr"
+              "browserTarget": "monero-interactive:build:en-dev"
+            },
+            "es-prod": {
+              "browserTarget": "monero-interactive:build:es-prod"
+            },
+            "es-dev": {
+              "publicHost": "https://localhost:5001/es/sockjs-node/",
+              "hmr": true,
+              "hmrWarning": false,
+              "browserTarget": "monero-interactive:build:es-dev"
             }
           }
         },
@@ -125,6 +170,21 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false
+            }
+          }
+        },
+        "xliffmerge": {
+          "builder": "@ngx-i18nsupport/tooling:xliffmerge",
+          "options": {
+            "xliffmergeOptions": {
+              "i18nFormat": "xlf",
+              "srcDir": "src/i18n",
+              "genDir": "src/i18n",
+              "defaultLanguage": "en",
+              "languages": [
+                "en",
+                "es"
+              ]
             }
           }
         }

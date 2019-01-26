@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template" target-language="es">
+    <body>
+      <trans-unit id="home-header-subtitle" datatype="html">
+        <source>
+  Interactive Tutorials on Monero Stagenet
+</source>
+        <target state="translated">Tutoriales interactivos en el Stagenet de Monero</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Subtitle, header</note>
+      </trans-unit>
+      <trans-unit id="home-card1-title" datatype="html">
+        <source>
+        Learn Monero
+      </source>
+        <target state="translated">Aprende Monero</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 1 Title, home</note>
+      </trans-unit>
+      <trans-unit id="home-card1-subtitle" datatype="html">
+        <source>
+        Without spending actual funds!
+      </source>
+        <target state="translated">Sin gaster fondos reales!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 1 Subtitle, home</note>
+      </trans-unit>
+      <trans-unit id="home-card1-p1" datatype="html">
+        <source>
+        Learn by interacting with the Monero Stagenet Network.
+        Tutorials validates your steps and teaches you how to
+        use Monero.
+      </source>
+        <target state="translated">Aprende interactuando con el Stagenet de Monero.
+Los tutoriales validan tus pasos y te enseñan como usar Monero</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 1 Paragraph 1, home</note>
+      </trans-unit>
+      <trans-unit id="home-card1-p2" datatype="html">
+        <source>
+        You can do every tutorial without spending any real Monero
+      </source>
+        <target state="translated">Puedes realizar todos los tutoriales sin gastar ningun Monero de verdad</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 1 Paragraph 2, home</note>
+      </trans-unit>
+      <trans-unit id="home-card1-start-button" datatype="html">
+        <source>START</source>
+        <target state="translated">COMENZAR</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 1 Start Button, home</note>
+      </trans-unit>
+      <trans-unit id="home-card2-title" datatype="html">
+        <source>
+        Stagenet only
+      </source>
+        <target state="translated">Solo en Stagenet</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 2 Title, home</note>
+      </trans-unit>
+      <trans-unit id="home-card2-subtitle" datatype="html">
+        <source>
+        No real monero will be spent
+      </source>
+        <target state="translated">No se gastaran Moneroj reales</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 2 Subtitle, home</note>
+      </trans-unit>
+      <trans-unit id="home-card2-p1" datatype="html">
+        <source>
+        All tutorials work only in the Monero Stagenet.
+        The Stagenet is exactly the same as Mainnet, only that
+        coins have no value.
+      </source>
+        <target state="translated">Todos los tutoriales funcionan solo en el Stagenet de Monero
+El Stagenet es exactamente igual al Mainnet, solo que la moneda no tiene valor real.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 2 Paragraph 1, home</note>
+      </trans-unit>
+      <trans-unit id="home-card2-p2" datatype="html">
+        <source>
+        The technology is the same, what you learn on the Stagenet
+        works the same on the Mainnet.
+      </source>
+        <target state="translated">La tecnología es la misma, lo que aprendes en Stagenet funciona en Mainnet.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 2 Paragraph 2, home</note>
+      </trans-unit>
+      <trans-unit id="home-card3-title" datatype="html">
+        <source>
+        Contributing
+      </source>
+        <target state="translated">Contribuir</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 3 Title, home</note>
+      </trans-unit>
+      <trans-unit id="home-card3-subtitle" datatype="html">
+        <source>
+        Is there anything broken? Want to help?
+      </source>
+        <target state="translated">Hay algo roto? Quieres ayudar?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 3 Subtitle, home</note>
+      </trans-unit>
+      <trans-unit id="home-card3-p1" datatype="html">
+        <source>
+        The entire code for Monero Interactive is hosted on GitHub.
+        If you find anything broken, incorrect information, or
+        something else, you can create issues on our GitHub.
+      </source>
+        <target state="translated">Todo el código de Monero Interactive esta alojado en GitHub.
+Si encuentras algo roto, contenido incorrecto, etc, puedes crear Issues en GitHub</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 3 Paragraph 1, home</note>
+      </trans-unit>
+      <trans-unit id="home-card3-p2" datatype="html">
+        <source>
+        You can also reach us at support@buySomedomain.com
+      </source>
+        <target state="translated">Tambien puedes enviarnos un email a support@buySomedomain.com</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 3 Paragraph 2, home</note>
+      </trans-unit>
+      <trans-unit id="home-card3-github-button" datatype="html">
+        <source>CODE ON GITHUB</source>
+        <target state="translated">CODIGO EN GITHUB</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/home/home.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <note priority="1" from="description">Home Card 3 GitHub Button, home</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

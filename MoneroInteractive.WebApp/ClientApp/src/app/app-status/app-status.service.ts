@@ -2,6 +2,7 @@ import { Injectable, Inject, OnDestroy } from '@angular/core';
 import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
 import { AppStatusDto } from './app-status.model';
 import { Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +17,10 @@ export class AppStatusService implements OnDestroy {
 
   private statusSubject = new Subject<AppStatusDto>();
 
-  constructor(
-    @Inject('BASE_URL')
-    baseUrl: string) {
+  constructor() {
 
     this.connection = new HubConnectionBuilder()
-      .withUrl(baseUrl + 'hubs/app-status')
+      .withUrl(environment.apiUrl + 'hubs/app-status')
       .build();
 
     // TODO: error handling with angular?
